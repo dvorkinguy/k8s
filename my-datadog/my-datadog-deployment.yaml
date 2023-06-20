@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-datadog
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-datadog
+  template:
+    metadata:
+      labels:
+        app: my-datadog
+        owner: GuyDvorkin
+        project: my-services
+    spec:
+      containers:
+      - name: my-datadog
+        image: datadog/agent:7.45.1-rc.3-jmx
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "1"
+        ports:
+        - containerPort: 80

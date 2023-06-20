@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-flask-app
+  labels:
+    owner: GuyDvorkin
+    project: simple-flask-app-k8s-adv-lesson-10
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: simple-flask-app
+  template:
+    metadata:
+      labels:
+        app: simple-flask-app
+        owner: GuyDvorkin
+        project: simple-flask-app-k8s-adv-lesson-10 # Service will look for those PODS Labels
+    spec:
+      containers:
+      - name: simple-flask-app
+        image: dvorkinguy/simple-flask-app:3.1.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-single-pod-service
+  labels: 
+    env: prod
+    owner: GuyDvorkin
+spec:
+  type: LoadBalancer
+  selector:
+    project: simple-flask-app-k8s-adv-lesson-10 # Selecting PODS with those labels
+    app: simple-flask-app
+  ports:
+    - name: app-listener
+      protocol: TCP
+      port: 80          # Port on Load Balancer
+      targetPort: 5000  # Port on PODS

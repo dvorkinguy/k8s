@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-replicas
+  labels:
+    app: simple-flask-app
+    env: prod
+    owner: Dvorkin_Guy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: simple-flask-app
+      projects: adv
+  template:
+    metadata:
+      labels:
+        app: simple-flask-app
+        projects: adv
+    spec:
+      containers:
+      - name: adv-simple-flask-app
+        image: dvorkinguy/simple-flask-app:3.1.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-web
+  labels:
+    name: my-web
+    env: prod
+    tier: frontend
+    owner: GuyDvorkin
+    
+spec:
+  containers:
+  - name: my-web
+    image: dvorkinguy/simple-flask-app:3.1.0
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 5000

@@ -1,0 +1,8 @@
+server:
+replicas: 1
+
+alerting:
+alertmanagers:
+- name: alertmanager-main
+persistentVolume:
+enabled: false

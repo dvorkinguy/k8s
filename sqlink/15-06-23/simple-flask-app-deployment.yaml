@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-flask-app
+  labels:
+    name: simple-flask-app
+spec:
+  containers:
+  - name: simple-flask-app
+    image: dvorkin.guy/simple-flask-app:3.0.1
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 5000

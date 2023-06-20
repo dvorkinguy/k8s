@@ -1,0 +1,26 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: guy-cluster
+  region: us-east-1
+
+nodeGroups:
+  - name: guy-nodegroup
+    instanceType: t2.micro
+    desiredCapacity: 3
+    maxSize: 3
+    minSize: 1
+    privateNetworking: true
+    tags:
+      my-tag-key: guy-nodegroup
+
+managedNodeGroups:
+  - name: my-managed-nodegroup
+    instanceType: t2.micro
+    minSize: 1
+    maxSize: 3
+    desiredCapacity: 3
+    volumeSize: 50
+    tags:
+      my-tag-key: guy-nodegroup

@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1-tomcat-deployment
+spec:
+  selector:
+    matchLabels:
+      app: app1-tomcat
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: app1-tomcat
+    spec:
+      containers:
+        - name: app1-tomcat-container
+          image: tomcat:jdk21-openjdk-slim
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app2-aphache-deployment
+spec:
+  selector:
+    matchLabels:
+      app: app2-aphache
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: app2-aphache
+    spec:
+      containers:
+        - name: app2-aphache-container
+          image: httpd:alpine3.18
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app3-simple-flask-deployment
+spec:
+  selector:
+    matchLabels:
+      app: app3-simple-flask
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: app3-simple-flask
+    spec:
+      containers:
+        - name: app3-simple-flask-container
+          image: dvorkinguy/simple-flask-app:3.1.0
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5000
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: app-autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: app1-tomcat-deployment
+  minReplicas: 2
+  maxReplicas: 4
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-loadbalancer
+spec:
+  selector:
+    app: app1-tomcat
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer

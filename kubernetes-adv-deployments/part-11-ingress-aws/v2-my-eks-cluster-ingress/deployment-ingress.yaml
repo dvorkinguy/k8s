@@ -1,0 +1,98 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-hosts
+  labels:
+    name: ingress-hosts
+spec:
+  rules:
+    - host: www.notjustdevops.com
+      http:
+        paths:
+          - path: /page1
+            pathType: Prefix
+            backend:
+              service:
+                name: app
+                port:
+                  number: 27017
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: main
+  template:
+    metadata:
+      labels:
+        app: main
+    spec:
+      containers:
+        - name: main
+          image: dvorkinguy/simple-flask-app:3.1.0
+          ports:
+            - containerPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: mongo:7.0.0-rc4
+          ports:
+            - containerPort: 27017
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: play
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: play
+  template:
+    metadata:
+      labels:
+        app: play
+    spec:
+      containers:
+        - name: play
+          image: tomcat:8.5.38
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lp
+  template:
+    metadata:
+      labels:
+        app: lp
+    spec:
+      containers:
+        - name: lp
+          image: nginx:stable-alpine3.17-slim
+          ports:
+            - containerPort: 80

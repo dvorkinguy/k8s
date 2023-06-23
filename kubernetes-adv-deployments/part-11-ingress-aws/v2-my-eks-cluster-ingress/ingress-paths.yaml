@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-hosts
+  labels:
+    name: ingress-hosts
+spec:
+  rules:
+    - host: www.notjustdevops.com
+      http:
+        paths:
+          - path: /page1
+            pathType: Prefix
+            backend:
+              service:
+                name: app
+                port:
+                  number: 27017

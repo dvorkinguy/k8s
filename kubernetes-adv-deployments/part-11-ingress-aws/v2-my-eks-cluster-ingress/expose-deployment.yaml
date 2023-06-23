@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: main
+spec:
+  selector:
+    app: main
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lp
+spec:
+  selector:
+    app: lp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: play
+spec:
+  selector:
+    app: play
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+spec:
+  selector:
+    app: app
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

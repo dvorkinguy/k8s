@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-web1-deployment
+  labels:
+    app: my-k8s1-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      project: mrwolf1
+  template:
+    metadata:
+      labels:
+        project: mrwolf1
+    spec:
+      containers:
+        - name: mrwolf1-web
+          image: nginx:stable-alpine3.17-slim
+          ports:
+            - containerPort: 80

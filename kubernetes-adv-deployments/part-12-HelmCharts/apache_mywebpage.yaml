@@ -1,0 +1,6 @@
+# helm install custom-apache bitnami/apache -f apache_mywebpage.yaml
+
+cloneHtdocsFromGit:
+  enabled: true
+  repository: https://github.com/dvorkinguy/simplewebpage.git
+  branch: main

@@ -1,0 +1,6 @@
+# Defaulf values for my HELM Chart
+
+container: 
+  image: dvorkinguy/simple-flask-app:3.1.0
+
+replicaCount: 2
